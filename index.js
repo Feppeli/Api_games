@@ -110,6 +110,23 @@ app.post('/game/edit/:id/:title/:year/:price', (req, res) => {
     })
 })
 
+
+
+
+// REFATORAMENTO DO EDIT
+
+/* app.put('/game/edit/:id/:title/:year/:price', (req, res) => {
+    games.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(game => {
+        game.update().then(() => {
+            res.redirect('/')
+        })
+    })
+}) */
+
     
 
 
