@@ -30,7 +30,10 @@ app.post('/game/:id/:title/:year/:price', (req, res) => {
         year,
         price
     }).then(() => {
-        res.redirect('/games')
+        res.redirect('/')
+    }).catch(err => {
+        console.log(err)
+        res.redirect('/')
     })
 })
 
@@ -69,6 +72,36 @@ app.delete('/game/:id', (req, res) => {
         res.send(err)
     })
 })
+
+/* app.put('/game/edit/:id/:title/:year/:price', (req, res) => {
+    let id = req.params.id;
+    let title = req.params.title;
+    let year = req.params.year;
+    let price = req.params.price;
+
+    games.findByPk(id)
+    }).then(game => {
+        if(games != undefined){
+            game.destroy().then(() => {
+                games.create({
+                    id,
+                    title,
+                    year,
+                    price
+                })
+            }).then(()=> {
+                res.send(game)
+            })
+        }else{
+            res.redirect('/')
+        }
+    }).cache(err => {
+        console.log(err)
+        res.send(err)
+}) */
+
+
+    
 
 
 app.listen(3000, () => {
