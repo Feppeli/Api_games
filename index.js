@@ -11,12 +11,15 @@ connection.authenticate().then(() => {
     console.log(`Error: ${err}`)
 })
 
+
+/* GET ALL */
 app.get('/', (req, res) => {
     games.findAll().then(games => {
         res.send(games)
     })
 })
 
+/* ADD */
 app.post('/game/:id/:title/:year/:price', (req, res) => {
 
     let id = req.params.id
@@ -37,6 +40,8 @@ app.post('/game/:id/:title/:year/:price', (req, res) => {
     })
 })
 
+
+/* GET by Id */
 app.get('/game/:id', (req, res) => {
     games.findOne({
         where: {
@@ -54,6 +59,8 @@ app.get('/game/:id', (req, res) => {
     })
 })
 
+
+/* DELETE */
 app.delete('/game/:id', (req, res) => {
     games.findOne({
         where: {
@@ -73,33 +80,35 @@ app.delete('/game/:id', (req, res) => {
     })
 })
 
-/* app.put('/game/edit/:id/:title/:year/:price', (req, res) => {
+
+/* EDIT */
+app.post('/game/edit/:id/:title/:year/:price', (req, res) => {
     let id = req.params.id;
     let title = req.params.title;
     let year = req.params.year;
-    let price = req.params.price;
+    let price = req.params.price
 
-    games.findByPk(id)
-    }).then(game => {
-        if(games != undefined){
-            game.destroy().then(() => {
-                games.create({
-                    id,
-                    title,
-                    year,
-                    price
-                })
-            }).then(()=> {
-                res.send(game)
-            })
-        }else{
-            res.redirect('/')
+    games.findOne({
+        where: {
+            id: req.params.id
         }
-    }).cache(err => {
-        console.log(err)
-        res.send(err)
-}) */
+    }).then(game => {
+        game.destroy().then(()=> {
+            games.create({
+                id, title, year, price
+            }).then(() => {
+                res.redirect('/')
 
+            }).catch(err => {
+                console.log(err)
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    }).catch(err => {
+        console.log(err)
+    })
+})
 
     
 
