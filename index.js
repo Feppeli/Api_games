@@ -1,4 +1,5 @@
 const express = require('express');
+const { where } = require('sequelize');
 const app = express();
 const connection = require('./database/db')
 const games = require('./database/models/games')
@@ -12,24 +13,43 @@ connection.authenticate().then(() => {
     console.log(`Error: ${err}`)
 })
 
-app.get('/games', (req, res) => {
+app.get('/', (req, res) => {
     games.findAll().then(games => {
         res.send(games)
     })
 })
 
-app.post('/addgame/:name/:price/:discount', (req, res) => {
+app.post('/game/:id/:title/:year/:price', (req, res) => {
 
-    let name = req.params.name;
-    let price = req.params.price;
-    let discount = req.params.discount
+    let id = req.params.id
+    let title = req.params.title;
+    let year = req.params.year;
+    let price = req.params.price
 
     games.create({
-        name,
-        price,
-        discount
+        id,
+        title,
+        year,
+        price
     }).then(() => {
         res.redirect('/games')
+    })
+})
+
+app.get('/game/:id', (req, res) => {
+    games.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(game => {
+        if(game != undefined){
+            res.send(game)
+        }else{
+            res.redirect('/')
+        }
+    }).catch(err => {
+        console.log(err)
+        res.redirect('/')
     })
 })
 

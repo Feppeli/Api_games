@@ -3,15 +3,22 @@ const connection = require('../db');
 
 const games =  connection.define('games',{
 
-    name:{
+
+    id:{
+        primaryKey: true,
+        type: Sequelize.STRING,
+        allowNull:false,
+        autoIncrement: true
+    },
+    title:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    year:{
         type: Sequelize.STRING,
         allowNull: false
     },
     price:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    discount:{
         type: Sequelize.STRING,
         allowNull: true
     }
