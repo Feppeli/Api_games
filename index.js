@@ -1,9 +1,7 @@
 const express = require('express');
-const { where } = require('sequelize');
 const app = express();
 const connection = require('./database/db')
 const games = require('./database/models/games')
-
 
 
 /* authenticate connection with db */
@@ -52,6 +50,26 @@ app.get('/game/:id', (req, res) => {
         res.redirect('/')
     })
 })
+
+app.delete('/game/:id', (req, res) => {
+    games.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(game => {
+        if(game != undefined){
+            game.destroy().then(() => {
+                res.redirect('/')
+            })
+        }else{
+            res.redirect('/')
+        }
+    }).catch(err => {
+        console.log(err)
+        res.send(err)
+    })
+})
+
 
 app.listen(3000, () => {
     console.log('Api rondado')
