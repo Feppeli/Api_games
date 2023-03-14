@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors')
 const connection = require('./database/db')
 const games = require('./database/models/games')
 
@@ -10,6 +11,9 @@ connection.authenticate().then(() => {
 }).catch(err => {
     console.log(`Error: ${err}`)
 })
+
+/* Concedendo acesso ao meu frontend */
+app.use(cors())
 
 
 /* GET ALL */
